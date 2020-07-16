@@ -15,7 +15,7 @@ Using the command line:
 
 .. code-block::
 
-    scipion3 installp -p local/path/to/scipion-em-pymol --devel
+    scipion3 installp -p local/path/to/scipion-em-mainmast --devel
 
 Plugin integration
 ------------------
