@@ -1,8 +1,9 @@
 =============================
-Pymol plugin for Scipion
+Mainmast plugin for Scipion
 =============================
 
-Pymol provides several tools to analyze atomic structures and electron density maps.
+MAINMAST is a de novo modeling protocol to build an entire protein 3D model directly from
+near-atomic resolution EM map.
 
 =====
 Setup

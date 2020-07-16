@@ -24,18 +24,18 @@ with open('requirements.txt') as f:
 # Fields marked as "Optional" may be commented out.
 
 setup(
-    name='scipion-em-pymol',  # Required
+    name='scipion-em-mainmast',  # Required
     version='0.1',  # Required
-    description='Plugin to execute Pymol software inside Scipion.',  # Required
+    description='Plugin to execute Mainmast software inside Scipion.',  # Required
     long_description=long_description,  # Optional
-    url='https://github.com/scipion-em/scipion-em-pymol',  # Optional
+    url='https://github.com/scipion-em/scipion-em-mainmast',  # Optional
     author='David Herreros Calero',  # Optional
     author_email='scipion@cnb.csic.es',  # Optional
-    keywords='scipion cryoem imageprocessing scipion-3.0 pymol',  # Optional
+    keywords='scipion cryoem imageprocessing scipion-3.0 mainmast',  # Optional
     packages=find_packages(),
     install_requires=[requirements],
-    entry_points={'pyworkflow.plugin': 'pymol = pymol'},
+    entry_points={'pyworkflow.plugin': 'mainmast = mainmast'},
     package_data={  # Optional
-       'pymol': ['icon.png', 'protocols.conf'],
+       'mainmast': ['icon.gif', 'protocols.conf'],
     }
 )

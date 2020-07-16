@@ -24,7 +24,7 @@
 # *
 # **************************************************************************
 
-PYMOL_HOME = 'PYMOL_HOME'
+MAINMAST_HOME = 'PYMOL_HOME'
 
 # Supported versions
-V2_4_0 = '2.4.0'
+V1_0_0 = '1.0.0'

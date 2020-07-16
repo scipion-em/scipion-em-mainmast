@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # **************************************************************************
 # *
 # * Authors:     David Herreros Calero (dherreros@cnb.csic.es)
@@ -25,17 +24,4 @@
 # *
 # **************************************************************************
 
-"""
-@article{PYMOL,
-title = "The PyMOL Molecular Graphics System, Version 2.4",
-journal = "...",
-volume = "...",
-number = ".",
-pages = ".",
-year = "2015",
-issn = ".",
-doi = ".",
-url = "https://pymol.org",
-author = "Schrodinger, LLC.",
-}
-"""
+from .protocol_mainmast_segment_map import ProtMainMastSegmentMap
