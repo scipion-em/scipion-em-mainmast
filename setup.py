@@ -36,6 +36,6 @@ setup(
     install_requires=[requirements],
     entry_points={'pyworkflow.plugin': 'mainmast = mainmast'},
     package_data={  # Optional
-       'mainmast': ['icon.gif', 'protocols.conf'],
+       'mainmast': ['icon.png', 'protocols.conf'],
     }
 )

@@ -30,7 +30,7 @@ import os
 import pwem
 from .constants import MAINMAST_HOME, V1_0_0
 
-_logo = "icon.gih"
+_logo = "icon.png"
 _references = ['MAINMAST']
 
 
