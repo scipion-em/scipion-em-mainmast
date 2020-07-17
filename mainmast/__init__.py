@@ -48,14 +48,14 @@ class Plugin(pwem.Plugin):
         return cls.getActiveVersion().startswith(version)
 
     @classmethod
-    def runMainMastScript(cls, protocol, args):
+    def runSegmentation(cls, protocol, args, cwd=None):
         mainMastCall = os.path.join('%s' % (cls.getHome()), 'MainmastSeg')
-        protocol.runJob(mainMastCall, args)
+        protocol.runJob(mainMastCall, args, cwd=cwd)
 
     @classmethod
-    def convertMST(cls, protocol, args):
-        convertCall = os.path.join('%s' % (cls.getHome()), 'bondtreeCIF.pl')
-        protocol.runJob(convertCall, args)
+    def convertMatrix(cls, protocol, args, cwd=None):
+        convertCall = os.path.join('%s' % (cls.getHome()), 'conv_ncs.pl')
+        protocol.runJob(convertCall, args, cwd=cwd)
 
     @classmethod
     def defineBinaries(cls, env):
