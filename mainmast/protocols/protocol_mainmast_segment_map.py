@@ -113,7 +113,33 @@ class ProtMainMastSegmentMap(EMProtocol):
 
     # --------------------------- INFO functions -----------------------------------
     def _summary(self):
-        pass
+        summary = []
+        summary.append("Input Volume provided: %s\n"
+                       % self.inputVolume.get().getFileName())
+        if self.getOutputsSize() >= 1:
+            regions = len(glob.glob(self._getExtraPath("region*.mrc")))
+            if hasattr(self, 'outputMasks'):
+                msg = ("A total of %d regions have been segmented" % regions)
+                summary.append(msg)
+            if hasattr(self, 'outputMask'):
+                msg = ("Output regions combined to an indentifier mask with %d different "
+                       "regions" % regions)
+                summary.append(msg)
+        else:
+            summary.append("Segmentation not ready yet.")
+        return summary
 
     def _methods(self):
-        pass
+        methodsMsgs = []
+        methodsMsgs.append('*Input volume:* %s' % self.inputVolume.get().getFileName())
+        methodsMsgs.append('*Map symmetry:* %s' % self.sym.get())
+        methodsMsgs.append('*Map threshold:* %d' % self.threshold.get())
+        methodsMsgs.append('*Regions combined:* %r' % self.combine.get())
+        if self.getOutputsSize() >= 1:
+            regions = len(glob.glob(self._getExtraPath("region*.mrc")))
+            msg = ("*Regions segmented:* %d" % regions)
+            methodsMsgs.append(msg)
+        else:
+            methodsMsgs.append("Segmentation not ready yet.")
+        return methodsMsgs
+
