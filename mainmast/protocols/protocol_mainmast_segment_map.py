@@ -85,6 +85,7 @@ class ProtMainMastSegmentMap(EMProtocol):
             outMask = ih.createImage()
             for idx, image in enumerate(sorted(glob.glob(self._getExtraPath("region*.mrc")))):
                 region = ih.read(image).getData()
+                region[region != 0] = 1
                 region *= (idx+1)
                 if idx == 0:
                     outData = np.zeros(region.shape, float)
