@@ -28,7 +28,11 @@
 import os
 
 import pwem
+
+from scipion.install.funcs import VOID_TGZ
+
 from .constants import MAINMAST_HOME, V1_0_0
+
 
 _logo = "icon.png"
 _references = ['MAINMAST']
@@ -49,26 +53,25 @@ class Plugin(pwem.Plugin):
 
     @classmethod
     def runSegmentation(cls, protocol, args, cwd=None):
-        mainMastCall = os.path.join('%s' % (cls.getHome()), 'MainmastSeg')
+        mainMastCall = os.path.join('%s' % (cls.getHome()), 'mainmast', 'MainmastSeg')
         protocol.runJob(mainMastCall, args, cwd=cwd)
 
     @classmethod
     def convertMatrix(cls, protocol, args, cwd=None):
-        convertCall = os.path.join('%s' % (cls.getHome()), 'conv_ncs.pl')
+        convertCall = os.path.join('%s' % (cls.getHome()), 'mainmast', 'conv_ncs.pl')
         protocol.runJob(convertCall, args, cwd=cwd)
 
     @classmethod
     def defineBinaries(cls, env):
-        SW_EM = env.getEmFolder()
+        mainmast_commands = []
+        mainmast_commands.append(('wget -c https://github.com/kiharalab/MAINMASTseg/archive/27828c8.tar.gz', "27828c8.tar.gz"))
+        mainmast_commands.append(("tar -xvf 27828c8.tar.gz", []))
+        mainmast_commands.append(("mv MAINMASTseg-27828c8* mainmast", []))
+        installation_cmd = 'cd mainmast && rm *.o && make -j %s && touch installed' % env.getProcessors()
+        mainmast_commands.append((installation_cmd, os.path.join('mainmast', 'installed')))
 
-        installationCmd = 'rm *.o && make -j %s && ' % env.getProcessors()
-        installationCmd += 'cd .. && mv MAINMASTseg-27828c8746d0d85d99708a66af1f81cb173ed626 mainmast'
-
-        mainmast_commands = [(installationCmd, os.path.join("%s" % SW_EM, "mainmast"))]
 
         env.addPackage('mainmast', version=V1_0_0,
-                       url='https://github.com/kiharalab/MAINMASTseg/archive/27828c8.tar.gz',
-                       buildDir='MAINMASTseg-27828c8746d0d85d99708a66af1f81cb173ed626',
                        commands=mainmast_commands,
-                       targetDir='mainmast',
+                       tar=VOID_TGZ,
                        default=True)
