@@ -32,9 +32,13 @@ from pwem.protocols import EMProtocol
 from pyworkflow.protocol import params
 from pwem.emlib.image import ImageHandler
 from pwem.objects import Volume
+from pwem.constants import SYM_DIHEDRAL_X
 
 from mainmast import Plugin as Mainmast
 from phenix import Plugin as Phenix
+
+from mainmast.constants import PHENIX_I222, PHENIX_SYM_NAME
+from mainmast.convert import PHENIX_LIST
 
 
 class ProtMainMastSegmentMap(EMProtocol):
@@ -49,9 +53,21 @@ class ProtMainMastSegmentMap(EMProtocol):
         form.addSection(label='Input data')
         form.addParam('inputVolume', params.PointerParam, pointerClass='Volume', label='Input volume', important=True,
                       help='Select a Volume to be segmented.')
-        form.addParam('sym', params.StringParam, label='Map symmetry',
-                      help='Point group symmetry of input volume (all point group symmetries are allowed '
-                           'except C1).')
+        form.addParam('symmetryGroup', params.EnumParam,
+                      choices=PHENIX_LIST,
+                      default=PHENIX_I222,
+                      label="Symmetry",
+                      help="https://scipion-em.github.io/docs/release-2.0.0/docs/developer/symmetries.html?highlight=symmetry"
+                           "Symmetry for a description of the symmetry groups "
+                           "format in CHIMERA.\n"
+                           "If no symmetry is present, use _c1_."
+                           'More information: \n'
+                           'https://www.cgl.ucsf.edu/chimera/current/docs/UsersGuide/midas/sym.html'
+                      )
+        form.addParam('symmetryOrder', params.IntParam, default=1,
+                      condition='symmetryGroup<=%d' % SYM_DIHEDRAL_X,
+                      label='Symmetry Order',
+                      help='Select the order of cyclic or dihedral symmetry.')
         form.addParam('threshold', params.FloatParam, default=0.0, label='Threshold',
                       help='Threshold of density map.')
         form.addParam('combine', params.BooleanParam, default=False, label='Combine masks?',
@@ -66,8 +82,14 @@ class ProtMainMastSegmentMap(EMProtocol):
         self._insertFunctionStep('createOutputStep')
 
     def createSymmetryMatrixStep(self):
+        symGroup = PHENIX_SYM_NAME[self.symmetryGroup.get()]
+        if symGroup == "Cn" or symGroup == "Dn":
+            symOrder = self.symmetryOrder.get()
+            sym = "%s%d" % (symGroup[0], symOrder)
+        else:
+            sym = symGroup
         pathMap = os.path.abspath(self.inputVolume.get().getFileName())
-        args = '%s symmetry=%s' % (pathMap, self.sym.get())
+        args = '%s symmetry=%s' % (pathMap, sym)
         Phenix.runPhenixProgram(Phenix.getProgram('map_symmetry.py'), args, cwd=self._getExtraPath())
         args = '%s > sym_mat.txt' % ('symmetry_from_map.ncs_spec')
         Mainmast.convertMatrix(self, args, cwd=self._getExtraPath())
@@ -131,9 +153,15 @@ class ProtMainMastSegmentMap(EMProtocol):
         return summary
 
     def _methods(self):
+        symGroup = PHENIX_SYM_NAME[self.symmetryGroup.get()]
+        if symGroup == "Cn" or symGroup == "Dn":
+            symOrder = self.symmetryOrder.get()
+            sym = "%s%d" % (symGroup[0], symOrder)
+        else:
+            sym = symGroup
         methodsMsgs = []
         methodsMsgs.append('*Input volume:* %s' % self.inputVolume.get().getFileName())
-        methodsMsgs.append('*Map symmetry:* %s' % self.sym.get())
+        methodsMsgs.append('*Map symmetry:* %s' % sym)
         methodsMsgs.append('*Map threshold:* %d' % self.threshold.get())
         methodsMsgs.append('*Regions combined:* %r' % self.combine.get())
         if self.getOutputsSize() >= 1:
