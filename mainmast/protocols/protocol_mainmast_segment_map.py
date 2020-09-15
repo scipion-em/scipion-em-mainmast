@@ -34,11 +34,11 @@ from pwem.emlib.image import ImageHandler
 from pwem.objects import Volume
 from pwem.constants import SYM_DIHEDRAL_X
 
-from mainmast import Plugin as Mainmast
 from phenix import Plugin as Phenix
+from phenix.constants import PHENIX_I, PHENIX_SYM_NAME
 
-from mainmast.constants import PHENIX_I222, PHENIX_SYM_NAME
-from mainmast.convert import PHENIX_LIST
+from mainmast import Plugin as Mainmast
+from phenix.convert import PHENIX_LIST
 
 
 class ProtMainMastSegmentMap(EMProtocol):
@@ -55,14 +55,11 @@ class ProtMainMastSegmentMap(EMProtocol):
                       help='Select a Volume to be segmented.')
         form.addParam('symmetryGroup', params.EnumParam,
                       choices=PHENIX_LIST,
-                      default=PHENIX_I222,
+                      default=PHENIX_I,
                       label="Symmetry",
                       help="https://scipion-em.github.io/docs/release-2.0.0/docs/developer/symmetries.html?highlight=symmetry"
                            "Symmetry for a description of the symmetry groups "
-                           "format in CHIMERA.\n"
-                           "If no symmetry is present, use _c1_."
-                           'More information: \n'
-                           'https://www.cgl.ucsf.edu/chimera/current/docs/UsersGuide/midas/sym.html'
+                           "format in PHENIX.\n"
                       )
         form.addParam('symmetryOrder', params.IntParam, default=1,
                       condition='symmetryGroup<=%d' % SYM_DIHEDRAL_X,
@@ -90,6 +87,8 @@ class ProtMainMastSegmentMap(EMProtocol):
             sym = symGroup
         pathMap = os.path.abspath(self.inputVolume.get().getFileName())
         args = '%s symmetry=%s' % (pathMap, sym)
+        args += ' nproc=%d' % self.numberOfThreads.get()
+        args += ' min_ncs_cc=0.0'
         Phenix.runPhenixProgram(Phenix.getProgram('map_symmetry.py'), args, cwd=self._getExtraPath())
         args = '%s > sym_mat.txt' % ('symmetry_from_map.ncs_spec')
         Mainmast.convertMatrix(self, args, cwd=self._getExtraPath())
