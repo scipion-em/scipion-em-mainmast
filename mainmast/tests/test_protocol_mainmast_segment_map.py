@@ -46,25 +46,24 @@ class TestImportBase(BaseTest):
 class TestImportData(TestImportBase):
     """ Import map volumes and atomic structures(PDBx/mmCIF files)
     """
-    pdbID = "5ni1"  # Haemoglobin atomic structure
 
-    def _importVolume(self):
-        args = {'filesPath': self.dsModBuild.getFile('volumes/emd_3488.map'),
-                'samplingRate': 1.05,
+    def _importVolume(self, path, samplingRate, label):
+        args = {'filesPath': path,
+                'samplingRate': samplingRate,
                 'setOrigCoord': False
                 }
         protImportVol = self.newProtocol(ProtImportVolumes, **args)
-        protImportVol.setObjLabel('import volume haemoglobin')
+        protImportVol.setObjLabel(label)
         self.launchProtocol(protImportVol)
         volume = protImportVol.outputVolume
         return volume
 
-    def _importAtomStruct(self):
+    def _importAtomStruct(self, pdbID, label):
         args = {'inputPdbData': ProtImportPdb.IMPORT_FROM_ID,
-                'pdbId': self.pdbID
+                'pdbId': pdbID
                 }
         protImportPDB = self.newProtocol(ProtImportPdb, **args)
-        protImportPDB.setObjLabel('import pdb 5ni1')
+        protImportPDB.setObjLabel(label)
         self.launchProtocol(protImportPDB)
         structure = protImportPDB.outputPdb
         return structure
@@ -84,13 +83,84 @@ class TestImportData(TestImportBase):
 
 class TestMainMastSegmentMap(TestImportData):
 
+    pdbID = ["5ni1"]  # Haemoglobin atomic structure
+
+    def testSymO(self):
+
+        # Import Volume
+        label = 'import volume apoferritin'
+        path = self.dsModBuild.getFile('volumes/emd_9865.map')
+        samplingRate = 0.5
+        volume = self._importVolume(path, samplingRate, label)
+
+        # import PDB
+        # structure = self._importAtomStruct()
+
+        # Convert PDB
+        # volume_from_pdb = self._convertAtomStruct(structure)
+
+        # ProtMainMastSegmentMap - Map arguments
+        args = {'inputVolume': volume,
+                'symmetryGroup': PHENIX_OCTAHEDRAL,
+                'threshold': 0.02
+                }
+
+        protMainMastSeg1 = self.newProtocol(ProtMainMastSegmentMap,
+                                            **args)
+        protMainMastSeg1.setObjLabel('MainMast Segmentation - EMD Map')
+        self.launchProtocol(protMainMastSeg1)
+
+        seg = protMainMastSeg1.outputMasks
+        self.assertTrue(seg.getSize() == 24, "There was a problem with the segmentation")
+        self.assertTrue(seg.getSamplingRate() == volume.getSamplingRate(),
+                        "Wrong sampling rate in output")
+        self.assertTrue(seg.getXDim() == 450,
+                        "Wrong dimensions in output")
+
+    def testSymD2(self):
+
+        # Import Volume
+        label = 'import volume beta-galactosidase'
+        path = self.dsModBuild.getFile('volumes/emd_5995.map')
+        samplingRate = 0.64
+        volume = self._importVolume(path, samplingRate, label)
+
+        # import PDB
+        # structure = self._importAtomStruct()
+
+        # Convert PDB
+        # volume_from_pdb = self._convertAtomStruct(structure)
+
+        # ProtMainMastSegmentMap - Map arguments
+        args = {'inputVolume': volume,
+                'symmetryGroup': PHENIX_DIHEDRAL_X,
+                'symmetryOrder': 2,
+                'threshold': 0.02
+                }
+
+        protMainMastSeg1 = self.newProtocol(ProtMainMastSegmentMap,
+                                            **args)
+        protMainMastSeg1.setObjLabel('MainMast Segmentation - EMD Map')
+        self.launchProtocol(protMainMastSeg1)
+
+        seg = protMainMastSeg1.outputMasks
+        self.assertTrue(seg.getSize() == 4, "There was a problem with the segmentation")
+        self.assertTrue(seg.getSamplingRate() == volume.getSamplingRate(),
+                        "Wrong sampling rate in output")
+        self.assertTrue(seg.getXDim() == 340,
+                        "Wrong dimensions in output")
+
     def testSymC2(self):
 
         # Import Volume
-        volume = self._importVolume()
+        label = 'import volume haemoglobin'
+        path = self.dsModBuild.getFile('volumes/emd_3488.map')
+        samplingRate = 1.05
+        volume = self._importVolume(path, samplingRate, label)
 
         # import PDB
-        structure = self._importAtomStruct()
+        label = 'import pdb 5ni1'
+        structure = self._importAtomStruct(self.pdbID[0], label)
 
         # Convert PDB
         volume_from_pdb = self._convertAtomStruct(structure)
