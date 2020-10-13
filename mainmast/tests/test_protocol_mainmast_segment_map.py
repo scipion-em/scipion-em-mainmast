@@ -82,22 +82,22 @@ class TestImportData(TestImportBase):
 
 class TestMainMastSegmentMap(TestImportData):
 
-    pdbID = ["5ni1", "6vyg", "6sht", "", "4ci0"]  # Haemoglobin atomic structure
+    pdbID = ["5ni1", "6vyg", "6sht", "", "4ci0", "6n1r"]  # Haemoglobin atomic structure
 
     def testSymT(self):
 
         # Import Volume
-        label = 'import volume F420'
-        path = self.dsModBuild.getFile('volumes/emd_2513.map')
+        label = 'import volume GyrA N-terminal fragment'
+        path = self.dsModBuild.getFile('volumes/emd_9318.map')
         samplingRate = 0.87
         volume = self._importVolume(path, samplingRate, label)
 
         # # import PDB
-        # label = "import pdb 4ci0"
-        # structure = self._importAtomStruct(self.pdbID[2], label)
+        # label = "import pdb 6n1r"
+        # structure = self._importAtomStruct(self.pdbID[4], label)
         #
         # # Convert PDB
-        # label = 'convert pdb 4ci0'
+        # label = 'convert pdb 6n1r'
         # size = 224
         # volume_from_pdb = self._convertAtomStruct(structure, size,
         #                                           samplingRate, label)
@@ -105,7 +105,7 @@ class TestMainMastSegmentMap(TestImportData):
         # ProtMainMastSegmentMap - Map arguments
         args = {'inputVolume': volume,
                 'symmetryGroup': PHENIX_TETRAHEDRAL,
-                'threshold': 0.09
+                'threshold': 0.0374
                 }
 
         protMainMastSeg1 = self.newProtocol(ProtMainMastSegmentMap, **args)
@@ -113,11 +113,11 @@ class TestMainMastSegmentMap(TestImportData):
         self.launchProtocol(protMainMastSeg1)
 
         seg = protMainMastSeg1.outputMasks
-        self.assertTrue(seg.getSize() == 16,
+        self.assertTrue(seg.getSize() == 12,
                         "There was a problem with the segmentation")
         self.assertTrue(seg.getSamplingRate() == volume.getSamplingRate(),
                         "Wrong sampling rate in output")
-        self.assertTrue(seg.getXDim() == 224,
+        self.assertTrue(seg.getXDim() == 548,
                         "Wrong dimensions in output")
 
     # FIXME: I Symmetry is apparently not working (in the article is barely mentioned)
