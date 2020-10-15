@@ -94,7 +94,7 @@ class TestMainMastSegmentMap(TestImportData):
 
         # # import PDB
         # label = "import pdb 6n1r"
-        # structure = self._importAtomStruct(self.pdbID[4], label)
+        # structure = self._importAtomStruct(self.pdbID[5], label)
         #
         # # Convert PDB
         # label = 'convert pdb 6n1r'
@@ -157,115 +157,115 @@ class TestMainMastSegmentMap(TestImportData):
     #     self.assertTrue(seg.getXDim() == 400,
     #                     "Wrong dimensions in output")
 
-    # def testSymO(self):
-    #
-    #     # Import Volume
-    #     label = 'import volume apoferritin'
-    #     path = self.dsModBuild.getFile('volumes/emd_10205.map')
-    #     samplingRate = 0.96
-    #     volume = self._importVolume(path, samplingRate, label)
-    #
-    #     # # import PDB
-    #     # label = "import pdb 6sht"
-    #     # structure = self._importAtomStruct(self.pdbID[2], label)
-    #     #
-    #     # # Convert PDB
-    #     # label = 'convert pdb 6sht'
-    #     # size = 256
-    #     # volume_from_pdb = self._convertAtomStruct(structure, size,
-    #     #                                           samplingRate, label)
-    #
-    #     # ProtMainMastSegmentMap - Map arguments
-    #     args = {'inputVolume': volume,
-    #             'symmetryGroup': PHENIX_OCTAHEDRAL,
-    #             'threshold': 0.05
-    #             }
-    #
-    #     protMainMastSeg1 = self.newProtocol(ProtMainMastSegmentMap, **args)
-    #     protMainMastSeg1.setObjLabel('MainMast Segmentation - EMD Map')
-    #     self.launchProtocol(protMainMastSeg1)
-    #
-    #     seg = protMainMastSeg1.outputMasks
-    #     self.assertTrue(seg.getSize() == 24,
-    #                     "There was a problem with the segmentation")
-    #     self.assertTrue(seg.getSamplingRate() == volume.getSamplingRate(),
-    #                     "Wrong sampling rate in output")
-    #     self.assertTrue(seg.getXDim() == 256,
-    #                     "Wrong dimensions in output")
-    #
-    # def testSymD2(self):
-    #
-    #     # Import Volume
-    #     label = 'import volume plasmodium'
-    #     path = self.dsModBuild.getFile('volumes/emd_21459.map')
-    #     samplingRate = 0.84
-    #     volume = self._importVolume(path, samplingRate, label)
-    #
-    #     # # import PDB
-    #     # label = "import pdb 6vyg"
-    #     # structure = self._importAtomStruct(self.pdbID[1], label)
-    #     #
-    #     # # Convert PDB
-    #     # label = 'convert pdb 6vyg'
-    #     # size = 256
-    #     # volume_from_pdb = self._convertAtomStruct(structure, size,
-    #     #                                           samplingRate, label)
-    #
-    #     # ProtMainMastSegmentMap - Map arguments
-    #     args = {'inputVolume': volume,
-    #             'symmetryGroup': PHENIX_DIHEDRAL_X,
-    #             'symmetryOrder': 2,
-    #             'threshold': 0.01
-    #             }
-    #
-    #     protMainMastSeg1 = self.newProtocol(ProtMainMastSegmentMap, **args)
-    #     protMainMastSeg1.setObjLabel('MainMast Segmentation - EMD Map')
-    #     self.launchProtocol(protMainMastSeg1)
-    #
-    #     seg = protMainMastSeg1.outputMasks
-    #     self.assertTrue(seg.getSize() == 4,
-    #                     "There was a problem with the segmentation")
-    #     self.assertTrue(seg.getSamplingRate() == volume.getSamplingRate(),
-    #                     "Wrong sampling rate in output")
-    #     self.assertTrue(seg.getXDim() == 256,
-    #                     "Wrong dimensions in output")
-    #
-    # def testSymC2(self):
-    #
-    #     # Import Volume
-    #     label = 'import volume haemoglobin'
-    #     path = self.dsModBuild.getFile('volumes/emd_3488.map')
-    #     samplingRate = 1.05
-    #     volume = self._importVolume(path, samplingRate, label)
-    #
-    #     # # import PDB
-    #     # label = 'import pdb 5ni1'
-    #     # structure = self._importAtomStruct(self.pdbID[0], label)
-    #     #
-    #     # # Convert PDB
-    #     # label = 'convert pdb 5ni1'
-    #     # size = 100
-    #     # volume_from_pdb = self._convertAtomStruct(structure, size,
-    #     #                                           samplingRate, label)
-    #
-    #     # ProtMainMastSegmentMap - Map arguments
-    #     args = {'inputVolume': volume,
-    #             'symmetryGroup': PHENIX_CYCLIC,
-    #             'symmetryOrder': 2,
-    #             'threshold': 0.09
-    #             }
-    #
-    #     protMainMastSeg1 = self.newProtocol(ProtMainMastSegmentMap, **args)
-    #     protMainMastSeg1.setObjLabel('MainMast Segmentation - EMD Map')
-    #     self.launchProtocol(protMainMastSeg1)
-    #
-    #     seg = protMainMastSeg1.outputMasks
-    #     self.assertTrue(seg.getSize() == 2,
-    #                     "There was a problem with the segmentation")
-    #     self.assertTrue(seg.getSamplingRate() == volume.getSamplingRate(),
-    #                     "Wrong sampling rate in output")
-    #     self.assertTrue(seg.getXDim() == 200,
-    #                     "Wrong dimensions in output")
+    def testSymO(self):
+
+        # Import Volume
+        label = 'import volume apoferritin'
+        path = self.dsModBuild.getFile('volumes/emd_10205.map')
+        samplingRate = 0.96
+        volume = self._importVolume(path, samplingRate, label)
+
+        # # import PDB
+        # label = "import pdb 6sht"
+        # structure = self._importAtomStruct(self.pdbID[2], label)
+        #
+        # # Convert PDB
+        # label = 'convert pdb 6sht'
+        # size = 256
+        # volume_from_pdb = self._convertAtomStruct(structure, size,
+        #                                           samplingRate, label)
+
+        # ProtMainMastSegmentMap - Map arguments
+        args = {'inputVolume': volume,
+                'symmetryGroup': PHENIX_OCTAHEDRAL,
+                'threshold': 0.05
+                }
+
+        protMainMastSeg1 = self.newProtocol(ProtMainMastSegmentMap, **args)
+        protMainMastSeg1.setObjLabel('MainMast Segmentation - EMD Map')
+        self.launchProtocol(protMainMastSeg1)
+
+        seg = protMainMastSeg1.outputMasks
+        self.assertTrue(seg.getSize() == 24,
+                        "There was a problem with the segmentation")
+        self.assertTrue(seg.getSamplingRate() == volume.getSamplingRate(),
+                        "Wrong sampling rate in output")
+        self.assertTrue(seg.getXDim() == 256,
+                        "Wrong dimensions in output")
+
+    def testSymD2(self):
+
+        # Import Volume
+        label = 'import volume plasmodium'
+        path = self.dsModBuild.getFile('volumes/emd_21459.map')
+        samplingRate = 0.84
+        volume = self._importVolume(path, samplingRate, label)
+
+        # # import PDB
+        # label = "import pdb 6vyg"
+        # structure = self._importAtomStruct(self.pdbID[1], label)
+        #
+        # # Convert PDB
+        # label = 'convert pdb 6vyg'
+        # size = 256
+        # volume_from_pdb = self._convertAtomStruct(structure, size,
+        #                                           samplingRate, label)
+
+        # ProtMainMastSegmentMap - Map arguments
+        args = {'inputVolume': volume,
+                'symmetryGroup': PHENIX_DIHEDRAL_X,
+                'symmetryOrder': 2,
+                'threshold': 0.01
+                }
+
+        protMainMastSeg1 = self.newProtocol(ProtMainMastSegmentMap, **args)
+        protMainMastSeg1.setObjLabel('MainMast Segmentation - EMD Map')
+        self.launchProtocol(protMainMastSeg1)
+
+        seg = protMainMastSeg1.outputMasks
+        self.assertTrue(seg.getSize() == 4,
+                        "There was a problem with the segmentation")
+        self.assertTrue(seg.getSamplingRate() == volume.getSamplingRate(),
+                        "Wrong sampling rate in output")
+        self.assertTrue(seg.getXDim() == 256,
+                        "Wrong dimensions in output")
+
+    def testSymC2(self):
+
+        # Import Volume
+        label = 'import volume haemoglobin'
+        path = self.dsModBuild.getFile('volumes/emd_3488.map')
+        samplingRate = 1.05
+        volume = self._importVolume(path, samplingRate, label)
+
+        # # import PDB
+        # label = 'import pdb 5ni1'
+        # structure = self._importAtomStruct(self.pdbID[0], label)
+        #
+        # # Convert PDB
+        # label = 'convert pdb 5ni1'
+        # size = 100
+        # volume_from_pdb = self._convertAtomStruct(structure, size,
+        #                                           samplingRate, label)
+
+        # ProtMainMastSegmentMap - Map arguments
+        args = {'inputVolume': volume,
+                'symmetryGroup': PHENIX_CYCLIC,
+                'symmetryOrder': 2,
+                'threshold': 0.09
+                }
+
+        protMainMastSeg1 = self.newProtocol(ProtMainMastSegmentMap, **args)
+        protMainMastSeg1.setObjLabel('MainMast Segmentation - EMD Map')
+        self.launchProtocol(protMainMastSeg1)
+
+        seg = protMainMastSeg1.outputMasks
+        self.assertTrue(seg.getSize() == 2,
+                        "There was a problem with the segmentation")
+        self.assertTrue(seg.getSamplingRate() == volume.getSamplingRate(),
+                        "Wrong sampling rate in output")
+        self.assertTrue(seg.getXDim() == 200,
+                        "Wrong dimensions in output")
 
         # ProtMainMastSegmentMap - Map from PDB arguments
         # FIXME: We need a conversion to CCP4 format (.map) of volume_from_pdb
