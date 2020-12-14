@@ -63,7 +63,7 @@ class MainMastViewer(pwviewer.Viewer):
 
     def chimeraViewFile(self):
         outPath = self.protocol._getExtraPath()
-        filePath = self.protocol._getTmpPath('viewChimera.cxc')
+        filePath = self.protocol._getExtraPath('viewChimera.cxc')
         f = open(filePath, "w")
         for idx, segmentation in enumerate(glob.glob(os.path.join(outPath, 'region*.mrc'))):
             f.write('open %s\n' % os.path.abspath(segmentation))
